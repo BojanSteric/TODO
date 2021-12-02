@@ -1,0 +1,42 @@
+.tabs-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+.tab-stripe{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: gold;
+}
+.tab-bar{
+    width: 50% !important;
+    background-color: pink !important;   
+}
+
+.MuiTab-textColorSecondary{
+    color:white !important;
+}
+.Mui-selected{
+    color: red !important;
+}
+
+.tab-content{
+    width: 60%;
+}
+
+@media only screen and (max-width: 772px) {
+    .tabs-wrapper{
+        width: 100%;
+        margin-left: 0;
+    }
+    .tab-bar{
+        width: 100% !important;
+    }
+    .tab-content{
+        width: 100% !important;
+    }
+  }
+

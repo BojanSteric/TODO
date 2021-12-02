@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import FormTodo from '../FormTodoComponent/FormTodo';
 import TodoDialog from '../FormTodoComponent/TodoDialog';
 import TodoList from '../TodoList/TodoList';
 import {getAllData, deleteTodo, postTodos} from '../../backend/firebase';
@@ -29,7 +28,7 @@ function Body() {
     return (
         <div>
             <TodoDialog onAdd={onAddTodo}></TodoDialog>
-            <TodoList todos={todos} delete={onDelTodo}></TodoList>
+            <TodoList todos={todos} delete={onDelTodo} key={todos}></TodoList>
         </div>
     )
 }

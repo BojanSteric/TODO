@@ -6,29 +6,21 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import EditIcon from '@mui/icons-material/Edit';
-import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
-import SaveIcon from '@mui/icons-material/Save';
-import PrintIcon from '@mui/icons-material/Print';
-import ShareIcon from '@mui/icons-material/Share';
-import { FormControl, FormHelperText, Input, InputLabel, SpeedDial,SpeedDialAction, SpeedDialIcon, styled } from '@mui/material';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import { FormControl, FormHelperText, Input, InputLabel, SpeedDial,SpeedDialAction, SpeedDialIcon, TextField } from '@mui/material';
+import './TodoDialog.css'
 
-const StyledSpeedDial = styled(SpeedDial)(({ theme }) => ({
-  position: 'absolute',
-  '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-    bottom: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
-    top: theme.spacing(2),
-    left: theme.spacing(2),
-  },
-}));
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
+
 
 export default function TodoDialog(props) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const [dueDate, setDueDate] = React.useState(Date.now());
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -36,6 +28,8 @@ export default function TodoDialog(props) {
 
   const handleClose = () => {
     setOpen(false);
+    setInput('');
+    setDueDate();
   };
 
   const [input, setInput] = React.useState('')
@@ -51,18 +45,19 @@ export default function TodoDialog(props) {
   }
 
   const actions = [
-    { icon: <FileCopyIcon />, name: 'Copy', do: handleClickOpen},
-    { icon: <SaveIcon />, name: 'Save', do:''},
-    { icon: <PrintIcon />, name: 'Print', do:'' },
-    { icon: <ShareIcon />, name: 'Share', do:'' },
+    { icon: <NoteAddIcon />, name: 'AddTask', do: handleClickOpen},
+    { icon: <MonetizationOnIcon />, name: 'BudgetPlans', do:''},
   ];
-  
+
+  const handleChange = (newValue) => {
+    setDueDate(newValue);
+  };
 
   return (
     <div>
       <SpeedDial
         ariaLabel="SpeedDial basic example"
-        sx={{ position: 'absolute', top: 5, left: 16 }}
+        sx={{ position: 'absolute', top: 20, left: 20 }}
         icon={<SpeedDialIcon />}
         direction='right'
         >
@@ -75,9 +70,6 @@ export default function TodoDialog(props) {
         />
       ))}
       </SpeedDial>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open dialog
-      </Button>
       <Dialog
         fullScreen={fullScreen}
         open={open}
@@ -89,15 +81,27 @@ export default function TodoDialog(props) {
           <form onSubmit={onAddHandler}>
             <FormControl>
                 <InputLabel htmlFor="new-todo">To do:</InputLabel>
-                <Input id="new-todo" type="text" className="" name="" value={input} onChange={onInputchange} aria-describedby="todo input" />
-                <FormHelperText id="todo-helper-text">What plans do you have?</FormHelperText>
-
+                <Input id="new-todo" type="text" name="todo" value={input} onChange={onInputchange} aria-describedby="todo input" />
+                <FormHelperText className="form-element" id="todo-helper-text">What plans do you have?</FormHelperText>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <DateTimePicker
+                   
+                    name="dueDate"
+                    label="Date&Time picker"
+                    value={dueDate}
+                    minDate={Date.now()}
+                    onChange={handleChange}
+                    renderInput={(params) => <TextField className="form-element" {...params} />}
+                  />
+                </LocalizationProvider>
+                <Button disabled={!input} variant="contained" type="submit">Add</Button>
             </FormControl>
-            <Button disabled={!input} variant="contained" type="submit">Add</Button>
+           
             </form>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
+      
           <Button autoFocus onClick={handleClose}>
             Cancel
           </Button>

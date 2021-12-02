@@ -1,9 +1,11 @@
 import React from 'react'
+import './Header.css'
 
 function Header() {
+
     return (
-        <div>
-            <h1>Special todo list</h1>
+        <div className="header">
+            <h1>Stay organised</h1>
         </div>
     )
 }
